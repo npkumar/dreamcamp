@@ -1,3 +1,5 @@
+<% include partials/header %>
+
 <h1>Check out latest dreams!</h1>
 
 <% dreams.forEach(function(dream){ %>
@@ -6,3 +8,5 @@
     <img src="<%= dream.image%>">
     </div>
 <% }); %>
+
+<% include partials/footer %>
