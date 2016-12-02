@@ -1,0 +1,12 @@
+<% include partials/header %>
+
+<h1>Tell us about your newest Dream!</h1>
+
+<form method="POST" action="/dreams">
+    <input type="text" placeholder="dream name" name="name">
+    <input type="text" placeholder="image url for dream" name="image">
+    <button>Post my Dream</button>
+</form>
+<a href="/dreams">View All Dreams</a>
+
+<% include partials/footer %>
