@@ -1,12 +1,22 @@
 <% include partials/header %>
 
-<h1>Check out latest dreams!</h1>
+<div class="container">
+    <header class="jumbotron">
+        <div class="container">
+            <h1>Check out new dreams!</h1>
+            <p>Find out what others are dreaming!</p>
+            <p>
+                <a class="btn btn-primary btn-large" href="/dreams/new">Add a new dream</a>
+            </p>
+        </div>
+    </header>
+    
+    <% dreams.forEach(function(dream){ %>
+        <div>
+        <h4><%= dream.name %><h4>
+        <img src="<%= dream.image%>">
+        </div>
+    <% }); %>
 
-<% dreams.forEach(function(dream){ %>
-    <div>
-    <h4><%= dream.name %><h4>
-    <img src="<%= dream.image%>">
-    </div>
-<% }); %>
-
+</div>
 <% include partials/footer %>
