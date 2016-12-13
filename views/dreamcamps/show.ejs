@@ -1,0 +1,10 @@
+<% include ../partials/header %>
+
+<h1><%= dreamCamp.name %></h1>
+<img src="<%= dreamCamp.image %>">
+<p><%= dreamCamp.description %></p>
+
+<% dreamCamp.comments.forEach(function(comment){ %>
+    <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
+<% }) %>
+<% include ../partials/footer %> 
