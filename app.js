@@ -3,6 +3,7 @@ var express     = require("express"),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
     DreamCamp   = require("./models/dreamcamp"),
+    Comment   = require("./models/comment"),
     seedDB      = require("./seeds");
 
 seedDB();
@@ -69,6 +70,25 @@ app.get("/dreams/:id/comments/new", function(req, res) {
           res.render("comments/new", {dreamcamp: dreamcamp});
       }
    });
+});
+
+app.post("/dreams/:id/comments", function(req,res){
+    DreamCamp.findById(req.params.id, function(err, dreamcamp){
+      if (err){
+          console.log(err);
+          res.redirect("/dreams");
+      }  else {
+          Comment.create(req.body.comments, function(err, comment){
+             if (err) {
+                 console.log(err);
+             } else {
+                 dreamcamp.comments.push(comment._id);
+                 dreamcamp.save();
+                 res.redirect("/dreams/" + dreamcamp._id);
+             }
+          }); 
+      }
+    });  
 });
 
 app.listen(process.env.PORT, process.env.IP, function(){
