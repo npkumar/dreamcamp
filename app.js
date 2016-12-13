@@ -22,7 +22,7 @@ app.get("/dreams", function(req, res){
       if(err){
           console.log(err);
       } else {
-          res.render("index", {dreams: dreams});
+          res.render("dreamcamps/index", {dreams: dreams});
       }
    });
 });
@@ -46,17 +46,28 @@ app.post("/dreams", function(req, res){
 
 // NEW - show form that send data to POST /dreams
 app.get("/dreams/new", function(req, res){
-   res.render("new");
+   res.render("dreamcamps/new");
 });
 
 // SHOW - show information about a single dream
 app.get("/dreams/:id", function(req, res){
-   DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
+   DreamCamp.findById(req.params.id).populate("comments").exec(function(err, foundDreamCamp){
        if(err){
            console.log(err);
        } else {
-        res.render("show", { dreamCamp: foundDreamCamp});
+        res.render("dreamcamps/show", { dreamCamp: foundDreamCamp});
        }
+   });
+});
+
+// COMMENTS
+app.get("/dreams/:id/comments/new", function(req, res) {
+   DreamCamp.findById(req.params.id, function(err, dreamcamp){
+      if (err){
+          console.log(err);
+      } else {
+          res.render("comments/new", {dreamcamp: dreamcamp});
+      }
    });
 });
 
