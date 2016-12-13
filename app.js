@@ -1,24 +1,17 @@
 var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
-    mongoose    = require("mongoose");
+    mongoose    = require("mongoose"),
+    DreamCamp   = require("./models/dreamcamp");
 
 mongoose.connect("mongodb://localhost/dream_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
- 
-// SCHEMA
-var dreamCampSchema = new mongoose.Schema({
-    name: String,
-    image: String,
-    description: String
-});
-var DreamCamp = mongoose.model("DreamCamp", dreamCampSchema);
 
 // DreamCamp.create({
 //     name: "Falling away", 
 //     image: "https://farm9.staticflickr.com/8067/8212362709_94a379cf66.jpg",
-//     description: "This was seen during the morning around 9 am"
+//     description: "This was seen during the morning around 9 am" 
 // }, function(err, dreamCamp){
 //     if(err){
 //         console.log(err);
