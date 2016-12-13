@@ -2,24 +2,15 @@ var express     = require("express"),
     app         = express(),
     bodyParser  = require("body-parser"),
     mongoose    = require("mongoose"),
-    DreamCamp   = require("./models/dreamcamp");
+    DreamCamp   = require("./models/dreamcamp"),
+    seedDB      = require("./seeds");
+
+seedDB();
 
 mongoose.connect("mongodb://localhost/dream_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 
-// DreamCamp.create({
-//     name: "Falling away", 
-//     image: "https://farm9.staticflickr.com/8067/8212362709_94a379cf66.jpg",
-//     description: "This was seen during the morning around 9 am" 
-// }, function(err, dreamCamp){
-//     if(err){
-//         console.log(err);
-//     } else {
-//         console.log("newly created dreamCamp ");
-//         console.log(dreamCamp);
-//     }
-// })
 
 app.get("/", function(req, res){
    res.render("landing");
