@@ -4,6 +4,8 @@
 <img src="<%= dreamCamp.image %>">
 <p><%= dreamCamp.description %></p>
 
+<p><a class="btn btn-success" href="/dreams/<%= dreamCamp._id %>/comments/new">Add New Comment</a></p>
+
 <% dreamCamp.comments.forEach(function(comment){ %>
     <p><strong><%= comment.author %></strong> - <%= comment.text %></p>
 <% }) %>
