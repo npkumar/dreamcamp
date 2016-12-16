@@ -106,6 +106,24 @@ app.post("/dreams/:id/comments", function(req,res){
     });  
 });
 
+
+// AUTH ROUTES
+app.get("/register", function(req, res) {
+    res.render("register");    
+});
+
+app.post("/register", function(req, res) {
+    User.register(new User({username: req.body.username}), req.body.password, function(err, user){
+       if (err) {
+           console.log(err);
+           return res.render("register");
+       } 
+       passport.authenticate("local")(req, res, function(){
+           res.redirect("/dreams");
+       });
+    });
+});
+
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("DreamCamp Server running at " + process.env.PORT); 
 });
