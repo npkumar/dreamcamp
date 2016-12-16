@@ -135,6 +135,11 @@ app.post("/login", passport.authenticate("local", {
     
 });
 
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/dreams");
+});
+
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("DreamCamp Server running at " + process.env.PORT); 
 });
