@@ -6,6 +6,7 @@ var express     = require("express"),
     LocalStrategy = require("passport-local"),
     DreamCamp   = require("./models/dreamcamp"),
     Comment   = require("./models/comment"),
+    User        = require("./models/user"),
     seedDB      = require("./seeds");
 
 seedDB();
@@ -15,6 +16,17 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
 
+// PASSPORT
+app.use(require("express-session")({
+    secret: "Revenge of the Siths",
+    resave: false,
+    saveUnitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 app.get("/", function(req, res){
    res.render("landing");
