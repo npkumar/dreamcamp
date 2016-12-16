@@ -77,7 +77,7 @@ app.get("/dreams/:id", function(req, res){
 });
 
 // COMMENTS
-app.get("/dreams/:id/comments/new", function(req, res) {
+app.get("/dreams/:id/comments/new", isLoggedIn, function(req, res) {
    DreamCamp.findById(req.params.id, function(err, dreamcamp){
       if (err){
           console.log(err);
@@ -87,7 +87,7 @@ app.get("/dreams/:id/comments/new", function(req, res) {
    });
 });
 
-app.post("/dreams/:id/comments", function(req,res){
+app.post("/dreams/:id/comments", isLoggedIn, function(req,res){
     DreamCamp.findById(req.params.id, function(err, dreamcamp){
       if (err){
           console.log(err);
@@ -139,6 +139,13 @@ app.get("/logout", function(req, res) {
     req.logout();
     res.redirect("/dreams");
 });
+
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 app.listen(process.env.PORT, process.env.IP, function(){
    console.log("DreamCamp Server running at " + process.env.PORT); 
