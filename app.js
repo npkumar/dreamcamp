@@ -12,7 +12,7 @@ var dreamCampRoutes = require("./routes/dreamcamps"),
     commentRoutes = require("./routes/comments"),
     indexRoutes = require("./routes/index");
     
-seedDB();
+//seedDB();
 
 mongoose.connect("mongodb://localhost/dream_camp");
 app.use(bodyParser.urlencoded({extended: true}));
