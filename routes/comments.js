@@ -1,11 +1,11 @@
 var express = require("express");
-var router = express.Router();
+var router = express.Router({ mergeParams: true });
 
 var DreamCamp   = require("../models/dreamcamp");
 var Comment   = require("../models/comment");
     
-// COMMENTS
-router.get("/dreams/:id/comments/new", isLoggedIn, function(req, res) {
+// COMMENTS NEW
+router.get("/new", isLoggedIn, function(req, res) {
    DreamCamp.findById(req.params.id, function(err, dreamcamp){
       if (err){
           console.log(err);
@@ -15,7 +15,8 @@ router.get("/dreams/:id/comments/new", isLoggedIn, function(req, res) {
    });
 });
 
-router.post("/dreams/:id/comments", isLoggedIn, function(req,res){
+// COMMENTS SAVE
+router.post("/", isLoggedIn, function(req,res){
     DreamCamp.findById(req.params.id, function(err, dreamcamp){
       if (err){
           console.log(err);
@@ -34,6 +35,7 @@ router.post("/dreams/:id/comments", isLoggedIn, function(req,res){
     });  
 });
 
+// Middleware
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
         return next();

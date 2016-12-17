@@ -36,9 +36,9 @@ app.use(function(req, res, next){
    next();
 });
 
-app.use(indexRoutes);
-app.use(dreamCampRoutes);
-app.use(commentRoutes);
+app.use("/", indexRoutes);
+app.use("/dreams", dreamCampRoutes);
+app.use("/dreams/:id/comments", commentRoutes);
 
 
 app.listen(process.env.PORT, process.env.IP, function(){
