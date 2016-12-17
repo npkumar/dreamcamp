@@ -15,7 +15,7 @@ router.get("/", function(req, res){
 });
    
 // CREATE - post dream data from a form
-router.post("/", function(req, res){
+router.post("/", isLoggedIn, function(req, res){
     var dream = {
      name: req.body.name,
      image: req.body.image,
@@ -32,7 +32,7 @@ router.post("/", function(req, res){
 });
 
 // NEW - show form that send data to POST /dreams
-router.get("/new", function(req, res){
+router.get("/new", isLoggedIn, function(req, res){
    res.render("dreamcamps/new");
 });
 
@@ -46,5 +46,13 @@ router.get("/:id", function(req, res){
        }
    });
 });
+
+// Middleware
+function isLoggedIn(req, res, next){
+    if (req.isAuthenticated()){
+        return next();
+    }
+    res.redirect("/login");
+}
 
 module.exports = router;
