@@ -19,13 +19,16 @@ router.post("/", isLoggedIn, function(req, res){
     var dream = {
      name: req.body.name,
      image: req.body.image,
-     description: req.body.description
+     description: req.body.description,
+     author: {
+         id: req.user._id,
+         username: req.user.username
+     }
    };
    DreamCamp.create(dream, function(err, newdream){
       if (err){
           console.log(err);
       } else {
-          console.log("Created dream " + newdream);
           res.redirect("/dreams");
       }
    });
