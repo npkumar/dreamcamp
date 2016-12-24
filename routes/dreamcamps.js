@@ -70,6 +70,18 @@ router.put("/:id", function(req, res) {
        }
     });
 });
+
+// DELETE - dreamcamp delete
+router.delete("/:id", function(req, res){
+   DreamCamp.findByIdAndRemove(req.params.id, function(err){
+       if (err) {
+           res.redirect("/dreams");
+       } else {
+           res.redirect("/dreams");
+       }
+   });
+});
+
 // Middleware
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
