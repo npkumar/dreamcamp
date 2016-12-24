@@ -51,17 +51,18 @@ router.get("/:id", function(req, res){
 });
 
 // EDIT - dreamcamp route
-router.get("/:id/edit", function(req, res) {
-    DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
-       if (err) {
-           res.redirect("/dreams");
-       } else {
-           res.render("dreamcamps/edit", {dreamcamp: foundDreamCamp});
-       }
-    });
+router.get("/:id/edit", checkDreamCampOwnership, function(req, res) {
+        DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
+           if (err) {
+                res.redirect("/dreams");
+           } else {
+                res.render("dreamcamps/edit", {dreamcamp: foundDreamCamp});   
+           }
+        });
 });
+
 // UPDATE - dreamcamp route
-router.put("/:id", function(req, res) {
+router.put("/:id", checkDreamCampOwnership, function(req, res) {
     DreamCamp.findByIdAndUpdate(req.params.id, req.body.dreamcamp, function(err, dreamcamp){
        if (err) {
            req.redirect("/dreams");
@@ -72,7 +73,7 @@ router.put("/:id", function(req, res) {
 });
 
 // DELETE - dreamcamp delete
-router.delete("/:id", function(req, res){
+router.delete("/:id", checkDreamCampOwnership, function(req, res){
    DreamCamp.findByIdAndRemove(req.params.id, function(err){
        if (err) {
            res.redirect("/dreams");
@@ -90,4 +91,25 @@ function isLoggedIn(req, res, next){
     res.redirect("/login");
 }
 
+function checkDreamCampOwnership(req, res, next){
+    // is the user logged in
+    if (req.isAuthenticated()){
+        DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
+           if (err) {
+               res.redirect("back");
+           } else {
+               // check if user owns the dreamcamp
+               if (foundDreamCamp.author.id.equals(req.user._id)){
+                    // all good, move on
+                    next();  
+               } else {
+                   res.redirect("back");
+               }
+           }
+        });
+    } else {
+        // send user back to previous page they are on
+        res.redirect("back");
+    }
+}
 module.exports = router;
