@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 var DreamCamp   = require("../models/dreamcamp");
+var middleware = require("../middleware");
 
 // INDEX - show all dreams
 router.get("/", function(req, res){
@@ -15,7 +16,7 @@ router.get("/", function(req, res){
 });
    
 // CREATE - post dream data from a form
-router.post("/", isLoggedIn, function(req, res){
+router.post("/", middleware.isLoggedIn, function(req, res){
     var dream = {
      name: req.body.name,
      image: req.body.image,
@@ -35,7 +36,7 @@ router.post("/", isLoggedIn, function(req, res){
 });
 
 // NEW - show form that send data to POST /dreams
-router.get("/new", isLoggedIn, function(req, res){
+router.get("/new", middleware.isLoggedIn, function(req, res){
    res.render("dreamcamps/new");
 });
 
@@ -51,7 +52,7 @@ router.get("/:id", function(req, res){
 });
 
 // EDIT - dreamcamp route
-router.get("/:id/edit", checkDreamCampOwnership, function(req, res) {
+router.get("/:id/edit", middleware.checkDreamCampOwnership, function(req, res) {
         DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
            if (err) {
                 res.redirect("/dreams");
@@ -62,7 +63,7 @@ router.get("/:id/edit", checkDreamCampOwnership, function(req, res) {
 });
 
 // UPDATE - dreamcamp route
-router.put("/:id", checkDreamCampOwnership, function(req, res) {
+router.put("/:id", middleware.checkDreamCampOwnership, function(req, res) {
     DreamCamp.findByIdAndUpdate(req.params.id, req.body.dreamcamp, function(err, dreamcamp){
        if (err) {
            req.redirect("/dreams");
@@ -73,7 +74,7 @@ router.put("/:id", checkDreamCampOwnership, function(req, res) {
 });
 
 // DELETE - dreamcamp delete
-router.delete("/:id", checkDreamCampOwnership, function(req, res){
+router.delete("/:id", middleware.checkDreamCampOwnership, function(req, res){
    DreamCamp.findByIdAndRemove(req.params.id, function(err){
        if (err) {
            res.redirect("/dreams");
@@ -83,33 +84,4 @@ router.delete("/:id", checkDreamCampOwnership, function(req, res){
    });
 });
 
-// Middleware
-function isLoggedIn(req, res, next){
-    if (req.isAuthenticated()){
-        return next();
-    }
-    res.redirect("/login");
-}
-
-function checkDreamCampOwnership(req, res, next){
-    // is the user logged in
-    if (req.isAuthenticated()){
-        DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
-           if (err) {
-               res.redirect("back");
-           } else {
-               // check if user owns the dreamcamp
-               if (foundDreamCamp.author.id.equals(req.user._id)){
-                    // all good, move on
-                    next();  
-               } else {
-                   res.redirect("back");
-               }
-           }
-        });
-    } else {
-        // send user back to previous page they are on
-        res.redirect("back");
-    }
-}
 module.exports = router;
