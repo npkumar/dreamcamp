@@ -21,6 +21,9 @@
                         <em>Submitted by <%= dreamCamp.author.username %></em>
                     </p>
                     <a class="btn btn-xs btn-warning" href="/dreams/<%= dreamCamp.id %>/edit">Edit</a>
+                    <form id="delete-form" method="POST" action="/dreams/<%= dreamCamp.id %>?_method=DELETE">
+                        <button class="btn btn-xs btn-danger">Delete</button>
+                    </form>
                 </div>
             </div>
             <div class="well">
