@@ -50,6 +50,26 @@ router.get("/:id", function(req, res){
    });
 });
 
+// EDIT - dreamcamp route
+router.get("/:id/edit", function(req, res) {
+    DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
+       if (err) {
+           res.redirect("/dreams");
+       } else {
+           res.render("dreamcamps/edit", {dreamcamp: foundDreamCamp});
+       }
+    });
+});
+// UPDATE - dreamcamp route
+router.put("/:id", function(req, res) {
+    DreamCamp.findByIdAndUpdate(req.params.id, req.body.dreamcamp, function(err, dreamcamp){
+       if (err) {
+           req.redirect("/dreams");
+       } else {
+           res.redirect("/dreams/" + req.params.id);
+       }
+    });
+});
 // Middleware
 function isLoggedIn(req, res, next){
     if (req.isAuthenticated()){
