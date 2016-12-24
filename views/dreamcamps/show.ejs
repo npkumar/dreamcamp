@@ -21,10 +21,10 @@
                         <em>Submitted by <%= dreamCamp.author.username %></em>
                     </p>
                     <% if (currentUser && dreamCamp.author.id.equals(currentUser._id)) { %>
-                    <a class="btn btn-xs btn-warning" href="/dreams/<%= dreamCamp.id %>/edit">Edit</a>
-                    <form id="delete-form" method="POST" action="/dreams/<%= dreamCamp.id %>?_method=DELETE">
-                        <button class="btn btn-xs btn-danger">Delete</button>
-                    </form>
+                        <a class="btn btn-xs btn-warning" href="/dreams/<%= dreamCamp.id %>/edit">Edit</a>
+                        <form id="delete-form" method="POST" action="/dreams/<%= dreamCamp.id %>?_method=DELETE">
+                            <button class="btn btn-xs btn-danger">Delete</button>
+                        </form>
                     <% } %>
                 </div>
             </div>
@@ -39,7 +39,12 @@
                             <strong><%= comment.author.username %></strong>
                             <span class="pull-right">10 days ago</span>
                             <p><%= comment.text %></p>
+                            <% if (currentUser && comment.author.id.equals(currentUser._id)) { %>
                             <a class="btn btn-xs btn-warning" href="/dreams/<%= dreamCamp._id %>/comments/<%= comment._id %>/edit">Edit</a>
+                            <form id="delete-form" method="POST" action="/dreams/<%= dreamCamp._id %>/comments/<%= comment._id %>?_method=DELETE">
+                                <button class="btn btn-xs btn-danger">Delete</button>
+                            </form>
+                            <% } %>
                         </div>
                     </div>
                 <% }) %>
