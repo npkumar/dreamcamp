@@ -16,9 +16,7 @@ var dreamCampRoutes = require("./routes/dreamcamps"),
     
 //seedDB();
 
-mongoose.connect(process.env.DATABASE_URL);
-//mongoose.connect("mongodb://localhost/dream_camp");
-//mongoose.connect("mongodb://nitin:nitin@ds145148.mlab.com:45148/dreamcamp");
+mongoose.connect(process.env.DATABASE_URL || "mongodb://localhost/dream_camp");
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
