@@ -8,6 +8,7 @@ var middlewareObj = {
         if (req.isAuthenticated()){
             return next();
         }
+        req.flash("error", "You need to login first!");
         res.redirect("/login");
     },
 
@@ -16,6 +17,7 @@ var middlewareObj = {
         if (req.isAuthenticated()){
             DreamCamp.findById(req.params.id, function(err, foundDreamCamp){
                if (err) {
+                   req.flash("error", "DreamCamp not found!");
                    res.redirect("back");
                } else {
                    // check if user owns the dreamcamp
@@ -23,12 +25,14 @@ var middlewareObj = {
                         // all good, move on
                         next();  
                    } else {
+                       req.flash("error", "You don't have permissions to do that!");
                        res.redirect("back");
                    }
                }
             });
         } else {
             // send user back to previous page they are on
+            req.flash("error", "You need to login first!");
             res.redirect("back");
         }
     },
@@ -45,12 +49,14 @@ var middlewareObj = {
                         // all good, move on
                         next();  
                    } else {
+                       req.flash("error", "You don't have permissions to do that!");
                        res.redirect("back");
                    }
                }
             });
         } else {
             // send user back to previous page they are on
+            req.flash("error", "You need to login first!");
             res.redirect("back");
         }
     }

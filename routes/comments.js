@@ -25,6 +25,7 @@ router.post("/", middleware.isLoggedIn, function(req,res){
       }  else {
           Comment.create(req.body.comments, function(err, comment){
              if (err) {
+                 req.flash("error", "Oops! Something went wrong!");
                  console.log(err);
              } else {
                  // add username and id to comment
@@ -36,6 +37,7 @@ router.post("/", middleware.isLoggedIn, function(req,res){
                  // push comment to dreamcamp
                  dreamcamp.comments.push(comment._id);
                  dreamcamp.save();
+                 req.flash("success", "Successfully added comment!");
                  res.redirect("/dreams/" + dreamcamp._id);
              }
           }); 
@@ -74,6 +76,7 @@ router.delete("/:comment_id", middleware.checkCommentOwnership, function(req, re
         if (err) {
             res.redirect("back");
         } else {
+            req.flash("success", "Comment deleted!");
             res.redirect("/dreams/" + req.params.id);
         }
     })
